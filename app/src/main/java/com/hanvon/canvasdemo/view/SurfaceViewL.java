@@ -228,12 +228,12 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
                 break;
             case MotionEvent.ACTION_UP:
                 mPenEngine.endStroke(updateRect);
-                singleThreadPool.execute(new Runnable() {
-                    @Override
-                    public void run() {
+//                singleThreadPool.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
                     update(new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]));
-                    }
-                });
+//                    }
+//                });
 //                singleThreadPool.execute(new Runnable() {
 //                    @Override
 //                    public void run() {
