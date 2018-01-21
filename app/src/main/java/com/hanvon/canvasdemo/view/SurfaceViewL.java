@@ -208,9 +208,9 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
                 break;
             case MotionEvent.ACTION_MOVE:
                 mPenEngine.strokePoint(e.getX(), e.getY(), pressure, updateRect);
-                singleThreadPool.execute(new Runnable() {
-                    @Override
-                    public void run() {
+//                singleThreadPool.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
                         //整笔删除时在内部已经发送了更新消息，这里之后要统一更新方案
                         if (penType == HwPenEngine.PEN_TYPE_ERASER_FOR_STROKE) {
 //                                update(new Rect(0, 0, getmWidth(), getHeight()));
@@ -222,8 +222,8 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
 
                             update(new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]));
                         }
-                    }
-                });
+//                    }
+//                });
 
                 break;
             case MotionEvent.ACTION_UP:
