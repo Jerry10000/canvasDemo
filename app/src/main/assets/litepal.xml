@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<litepal>
+    <dbname value="StrokeStore"></dbname>
+    <version value="1"></version>
+    <list>
+        <mapping class="com.hanvon.canvasdemo.beans.Point"></mapping>
+        <mapping class="com.hanvon.canvasdemo.beans.Stroke"></mapping>
+        <mapping class="com.hanvon.canvasdemo.beans.Template"></mapping>
+    </list>
+</litepal>

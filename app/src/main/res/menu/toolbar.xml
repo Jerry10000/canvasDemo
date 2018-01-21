@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_pen"
+        android:icon="@drawable/ic_brush"
+        android:title="pen"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_eraser"
+        android:icon="@drawable/ic_eraser"
+        android:title="eraser"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/save"
+        android:icon="@drawable/ic_save"
+        android:title="save"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/item_pre"
+        android:icon="@drawable/ic_ab_previous_gray"
+        android:title="previous"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/item_next"
+        android:icon="@drawable/ic_ab_next_gray"
+        android:title="next"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/setting"
+        android:icon="@drawable/ic_menu"
+        android:title="setting"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/clear"
+        android:title="clear"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/load"
+        android:title="load"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/changePage"
+        android:title="changePage"
+        app:showAsAction="never"/>
+</menu>
