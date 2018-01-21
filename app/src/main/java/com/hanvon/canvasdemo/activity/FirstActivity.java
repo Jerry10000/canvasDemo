@@ -4,19 +4,18 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hanvon.canvasdemo.R;
-import com.hanvon.canvasdemo.beans.Stroke;
-import com.hanvon.canvasdemo.beans.Template;
+//import com.hanvon.canvasdemo.beans.Stroke1;
+//import com.hanvon.canvasdemo.beans.Template;
 import com.hanvon.canvasdemo.engine.HwPenEngine;
 import com.hanvon.canvasdemo.view.SurfaceViewL;
 
@@ -31,10 +30,10 @@ public class FirstActivity extends AppCompatActivity {
     private int penBtnClickNum = 1;
     private int eraserBtnClickNum = 0;
     private long engine = -1;
-    private Template template;
+//    private Template template;
     private int penType, penWidth, penColor, penAlpha;
     private boolean penIsBeautify, penIsTransparent;
-    LinkedList<Stroke> list_strokes;
+//    LinkedList<Stroke1> list_strokes;
     private SurfaceViewL mSurfaceView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +110,9 @@ public class FirstActivity extends AppCompatActivity {
 //                long begin0 = System.currentTimeMillis();
                 try {
                     hwPen.save();
+//                    mSurfaceView.clearScreen();
+//                    Toast.makeText(FirstActivity.this, "正在保存\n保存后不能撤销恢复，需通过load来加载！！", Toast.LENGTH_LONG).show();
+//
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

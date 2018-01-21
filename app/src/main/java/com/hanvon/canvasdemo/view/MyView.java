@@ -3,17 +3,13 @@ package com.hanvon.canvasdemo.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 
 import com.hanvon.canvasdemo.engine.HwPenEngine;
@@ -30,6 +26,7 @@ public class MyView extends View {
     private static final String TAG = "SurfaceViewL";
 
     private static final int MSG_UPDATE = 1;
+    private static final int MSG_UPDATE_RECT = 2;
 
     private boolean isDrawing;
 
@@ -73,13 +70,18 @@ public class MyView extends View {
                     case MSG_UPDATE:
                         invalidate(new Rect(0, 0, getmWidth(), getHeight()));
                         break;
+                    case MSG_UPDATE_RECT:
+                        Rect rect = (Rect) msg.obj;
+//                        invalidate(rect);
+                        invalidate(new Rect(0, 0, getmWidth(), getHeight()));
                 }
 
             }
         };
 
-        mWidth = getWidth();
-        mHeight = getHeight();
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        mWidth = dm.widthPixels;
+        mHeight = dm.heightPixels;
         mPixels = new int[mWidth * mHeight];
         //创建画布
         mBitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
@@ -125,7 +127,13 @@ public class MyView extends View {
 
                                 bitRect.union(rect[0]);
                                 rects.add(rect[0]);
-                                invalidate(new Rect(bitRect));
+
+                                mBitmap.setPixels(mPixels, 0, mWidth, 0, 0, mWidth, mHeight);
+                                Message msg = Message.obtain();
+                                msg.what = MSG_UPDATE_RECT;
+                                msg.obj = new Rect(bitRect);
+                                mainHandler.sendMessage(msg);
+//                                invalidate(new Rect(bitRect));
                             }
                         }
                     });
@@ -140,7 +148,13 @@ public class MyView extends View {
                         rect[0] = new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]);
                         bitRect.union(rect[0]);
                         rects.add(rect[0]);
-                        invalidate(bitRect);
+
+                        mBitmap.setPixels(mPixels, 0, mWidth, 0, 0, mWidth, mHeight);
+                        Message msg = Message.obtain();
+                        msg.what = MSG_UPDATE_RECT;
+                        msg.obj = new Rect(bitRect);
+                        mainHandler.sendMessage(msg);
+//                        invalidate(bitRect);
 
                         //重置最大矩形框
                         bitRect.set(65535, 65535, 0, 0);
@@ -150,6 +164,7 @@ public class MyView extends View {
         }
         return true;
     }
+
 
 
     @Override

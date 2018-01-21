@@ -13,9 +13,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.hanvon.canvasdemo.R;
-import com.hanvon.canvasdemo.beans.Stroke;
-import com.hanvon.canvasdemo.beans.Template;
 import com.hanvon.canvasdemo.engine.HwPenEngine;
+import com.hanvon.canvasdemo.view.MyView;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -28,10 +27,10 @@ public class FirstActivityForView extends AppCompatActivity {
     private int penBtnClickNum = 0;
     private int eraserBtnClickNum = 0;
     private long engine = -1;
-    private Template template;
+//    private Template template;
     private int penType, penWidth, penColor, penAlpha;
     private boolean penIsBeautify, penIsTransparent;
-    LinkedList<Stroke> list_strokes;
+//    LinkedList<Stroke> list_strokes;
     private MyView mSurfaceView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,18 +5,17 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.graphics.Shader;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import com.hanvon.canvasdemo.engine.HwPenEngine;
-import com.hanvon.penenginejni.HWPenEngine;
 
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
@@ -26,8 +25,11 @@ import java.util.concurrent.Executors;
  * Created by pc on 2017/11/23.
  */
 
-public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
+public class SurfaceViewL2 extends SurfaceView implements SurfaceHolder.Callback{
     private static final String TAG = "SurfaceViewL";
+
+    private static final int MSG_UPDATE = 1;
+
     private boolean isDrawing;
     // SurfaceHolder
     private SurfaceHolder mSurfaceHolder;
@@ -40,17 +42,19 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
     private Rect bitRect = new Rect(65535,65535,0,0);
     private LinkedList<Rect> rects = new LinkedList<Rect>();
     public static HwPenEngine mPenEngine;
+    public int penType = HwPenEngine.PEN_TYPE_MARKER;
 
     private Context context;
-    ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+    ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
+    private Handler mainHandler;
 
-    public SurfaceViewL(Context context) {
+    public SurfaceViewL2(Context context) {
         super(context);
         this.context = context;
         init();
     }
 
-    public SurfaceViewL(Context context, AttributeSet attrs) {
+    public SurfaceViewL2(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         init();
@@ -82,6 +86,24 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
 //        mUpdateBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.template);
 //        mShader = new BitmapShader(mUpdateBitmap,Shader.TileMode.REPEAT,Shader.TileMode.REPEAT);
 //        mPaint.setShader(mShader);
+
+
+        mainHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what){
+                    case MSG_UPDATE:
+//                        update(new Rect(0, 0, getmWidth(), getHeight()));
+
+                        mPenEngine.getNewScreen();
+                        update((Rect) msg.obj);
+
+                        break;
+                }
+
+            }
+        };
     }
 
     @Override
@@ -105,8 +127,9 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
             mPenEngine = new HwPenEngine();
         }
         mPenEngine.init(mWidth, mHeight, mPixels);
-        mPenEngine.setSavePath("/mnt/sdcard/wwl/");
-        mPenEngine.setPenInfo(0, HwPenEngine.PEN_TYPE_INK, 0x800000ff, 45, 0);
+        mPenEngine.setSavePath("/mnt/sdcard/wwl1/", ".st");
+		mPenEngine.setHandler(mainHandler);		
+		mPenEngine.setPenInfo(0, HwPenEngine.PEN_TYPE_MARKER, 0x80FFE533, 45, 0);
     }
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {//改变
@@ -165,14 +188,15 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        float pressure = 1.0f;
-        if (e.getToolType(0) == MotionEvent.TOOL_TYPE_FINGER) {
-            pressure = 1.0f;
-        } else if (e.getToolType(0) == MotionEvent.TOOL_TYPE_STYLUS) {
-            pressure = e.getPressure();
-        } else if (e.getToolType(0) == MotionEvent.TOOL_TYPE_ERASER) {
-            pressure = e.getPressure();
-        }
+        float pressure = e.getPressure();
+//        float pressure = 1.0f;
+//        if (e.getToolType(0) == MotionEvent.TOOL_TYPE_FINGER) {
+//            pressure = 1.0f;
+//        } else if (e.getToolType(0) == MotionEvent.TOOL_TYPE_STYLUS) {
+//            pressure = e.getPressure();
+//        } else if (e.getToolType(0) == MotionEvent.TOOL_TYPE_ERASER) {
+//            pressure = e.getPressure();
+//        }
         final Rect[] rect = new Rect[1];
 
         switch (e.getAction()){
@@ -181,32 +205,29 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
                 break;
             case MotionEvent.ACTION_MOVE:
                 mPenEngine.strokePoint(e.getX(), e.getY(), pressure, updateRect);
-                cachedThreadPool.execute(new Runnable() {
+                singleThreadPool.execute(new Runnable() {
                     @Override
                     public void run() {
-                        rect[0] = new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]);
+                        //整笔删除时在内部已经发送了更新消息，这里之后要统一更新方案
+                        if (penType == HwPenEngine.PEN_TYPE_ERASER_FOR_STROKE) {
+//                                update(new Rect(0, 0, getmWidth(), getHeight()));
+                        } else {
+//                            rect[0] = new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]);
+//                            bitRect.union(rect[0]);
+//                            rects.add(rect[0]);
+//                            update(new Rect(bitRect));
 
-                        bitRect.union(rect[0]);
-                        rects.add(rect[0]);
-                        update(new Rect(bitRect));
-//                        update(new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]));
+                            update(new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]));
+                        }
                     }
                 });
                 break;
             case MotionEvent.ACTION_UP:
                 mPenEngine.endStroke(updateRect);
-                cachedThreadPool.execute(new Runnable() {
+                singleThreadPool.execute(new Runnable() {
                     @Override
                     public void run() {
-                        rect[0] = new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]);
-                        bitRect.union(rect[0]);
-                        rects.add(rect[0]);
-                        update(bitRect);
-
-                        //重置最大矩形框
-                        bitRect.set(65535, 65535, 0, 0);
-
-//                        update(new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]));
+                    update(new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]));
                     }
                 });
                 break;
@@ -241,6 +262,15 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
             mPaint.setAlpha(255);
             canvas.drawBitmap(mBitmap, 0, 0, mPaint);
         }
+    }
+
+    public void clearScreen(){
+        Canvas canvas = mSurfaceHolder.lockCanvas();
+        if (canvas != null) {
+            canvas.drawColor(Color.WHITE);
+//            mBitmap.eraseColor(0x00ffffff);
+        }
+        mSurfaceHolder.unlockCanvasAndPost(canvas);
     }
 
     public void clear(){
