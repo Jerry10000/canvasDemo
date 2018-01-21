@@ -130,7 +130,7 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
         mPenEngine.init(mWidth, mHeight, mPixels);
         mPenEngine.setSavePath("/mnt/sdcard/wwl/", ".st");
         mPenEngine.setHandler(mainHandler);
-        mPenEngine.setPenInfo(0, HwPenEngine.PEN_TYPE_MARKER, 0x80FFE533, 45, 0);
+        mPenEngine.setPenInfo(0, HwPenEngine.PEN_TYPE_MARKER, 0x80FFE533, 10, 0);
 //        mPenEngine.setPenInfo(0, HwPenEngine.PEN_TYPE_PENCIL, 0x80000000, 45, 0);
 //        penType = HwPenEngine.PEN_TYPE_PAINTBRUSH;
     }
@@ -228,12 +228,12 @@ public class SurfaceViewL extends SurfaceView implements SurfaceHolder.Callback{
                 break;
             case MotionEvent.ACTION_UP:
                 mPenEngine.endStroke(updateRect);
-                singleThreadPool.execute(new Runnable() {
-                    @Override
-                    public void run() {
+//                singleThreadPool.execute(new Runnable() {
+//                    @Override
+//                    public void run() {
                     update(new Rect(updateRect[0], updateRect[1], updateRect[2], updateRect[3]));
-                    }
-                });
+//                    }
+//                });
 //                singleThreadPool.execute(new Runnable() {
 //                    @Override
 //                    public void run() {

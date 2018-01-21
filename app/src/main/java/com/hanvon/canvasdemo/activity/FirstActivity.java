@@ -158,25 +158,25 @@ public class FirstActivity extends AppCompatActivity {
             hwPen = mSurfaceView.getPenEngine();
         }
         if(num%7 == 1) {
-            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_MARKER, 0x80FFE533, 45, 0);
+            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_MARKER, 0x80FFE533, 10, 0);
             mSurfaceView.penType = HwPenEngine.PEN_TYPE_MARKER;
         }else if(num%7 == 2){
-            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_FOUNTAIN1, 0xe0000000, 30, 0);
+            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_FOUNTAIN1, 0xe0000000, 10, 0);
             mSurfaceView.penType = HwPenEngine.PEN_TYPE_FOUNTAIN1;
         }else if(num%7 == 3){
-            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_FOUNTAIN2, 0xe0000000, 15, 0);
+            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_FOUNTAIN2, 0xe0000000, 10, 0);
             mSurfaceView.penType = HwPenEngine.PEN_TYPE_FOUNTAIN2;
         }else if(num%7 == 4){
-            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_PAINTBRUSH, 0xff808080, 45, 0);
+            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_PAINTBRUSH, 0xff808080, 10, 0);
             mSurfaceView.penType = HwPenEngine.PEN_TYPE_PAINTBRUSH;
         }else if(num%7 == 5){
-            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_INK, 0xe0000000, 45, 0);
+            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_INK, 0xe0000000, 10, 0);
             mSurfaceView.penType = HwPenEngine.PEN_TYPE_INK;
         }else if(num%7 == 6){
-            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_PENCIL, 0xff303030, 30, 0);
+            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_PENCIL, 0xff303030, 10, 0);
             mSurfaceView.penType = HwPenEngine.PEN_TYPE_PENCIL;
         }else{
-            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_CORRECTION, 0xe0800000, 50, 0);
+            hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_CORRECTION, 0xe0800000, 10, 0);
             mSurfaceView.penType = HwPenEngine.PEN_TYPE_CORRECTION;
         }
     }
