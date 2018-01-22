@@ -76,7 +76,7 @@ public class FirstActivity extends AppCompatActivity {
             case R.id.item_pen:
                 penBtnClickNum++;
                 switchPenType(penBtnClickNum);
-                hwPen.getNewScreen();
+//                hwPen.getNewScreen();
 
                 break;
             case R.id.item_eraser:
@@ -110,7 +110,7 @@ public class FirstActivity extends AppCompatActivity {
 //                long begin0 = System.currentTimeMillis();
                 try {
                     hwPen.save();
-//                    mSurfaceView.clearScreen();
+                    mSurfaceView.clearScreen();
 //                    Toast.makeText(FirstActivity.this, "正在保存\n保存后不能撤销恢复，需通过load来加载！！", Toast.LENGTH_LONG).show();
 //
                 } catch (IOException e) {

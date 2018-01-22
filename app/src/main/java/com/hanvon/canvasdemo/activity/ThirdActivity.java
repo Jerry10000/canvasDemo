@@ -76,7 +76,7 @@ public class ThirdActivity extends AppCompatActivity {
             case R.id.item_pen:
                 penBtnClickNum++;
                 switchPenType(penBtnClickNum);
-                hwPen.getNewScreen();
+//                hwPen.getNewScreen();
 
                 break;
             case R.id.item_eraser:
@@ -110,7 +110,7 @@ public class ThirdActivity extends AppCompatActivity {
 //                long begin0 = System.currentTimeMillis();
                 try {
                     hwPen.save();
-//                    mSurfaceView.clearScreen();
+                    mSurfaceView.clearScreen();
 //                    Toast.makeText(ThirdActivity.this, "正在保存\n保存后不能撤销恢复，需通过load来加载！！", Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -154,6 +154,9 @@ public class ThirdActivity extends AppCompatActivity {
     }
 
     private void switchPenType(int num) {
+        if (hwPen == null){
+            hwPen = mSurfaceView.getPenEngine();
+        }
         if(num%7 == 1) {
             hwPen.setPenInfo(0, HwPenEngine.PEN_TYPE_MARKER, 0x80FFE533, 45, 0);
             mSurfaceView.penType = HwPenEngine.PEN_TYPE_MARKER;
